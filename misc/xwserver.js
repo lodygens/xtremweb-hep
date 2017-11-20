@@ -96,6 +96,25 @@ function logout() {
 }
 
 /**
+ * This enables user to login
+ */
+function login(username, password) {
+    // var username = $('#xwlogin')[0].value;
+    // var password = $('#xwpassword')[0].value;
+    var credentialsHash =window.btoa(unescape(encodeURIComponent(username + ':' + password)));
+
+    $.ajax({
+      url: "/",
+      method: "POST",
+      headers: { 'Authorization': 'Basic ' + credentialsHash },
+      crossDomain: true,
+      // complete: function () {
+      //   window.location.assign("/");
+      // }
+    });
+}
+
+/**
  * These variables aim to colorize informations
  */
 var colors = ["#b0b0b0", "#e0e0e0"];
