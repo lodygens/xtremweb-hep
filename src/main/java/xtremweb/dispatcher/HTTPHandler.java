@@ -60,6 +60,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
@@ -924,8 +925,7 @@ public class HTTPHandler extends xtremweb.dispatcher.CommHandler {
 		logger.debug("Request URI             = " + reqUri);
 		// logger.debug("Request server = " + request.getServerName());
 		// logger.debug("Request port = " + request.getServerPort());
-		// logger.debug("Authorization = " +
-		// request.getHeader(HttpHeaders.AUTHORIZATION));
+		// logger.debug("Authorization = " + request.getHeader("Authorization"));
 		for (final Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
 			logger.finest("parameter " + e.nextElement());
 		}
@@ -942,8 +942,8 @@ public class HTTPHandler extends xtremweb.dispatcher.CommHandler {
 				logger.finest("cookie " + cookie.getName() + " : " + cookie.getValue());
 			}
 		}
-		if (request.getParameterMap().size() <= 0) {
-
+		
+		if (request.getHeader(HttpHeader.AUTHORIZATION.toString())==null) {
 			if (target.equals(PATH)) {
 				logger.debug("redirecting to dashboard");
 				redirectPage(baseRequest, Resources.DASHBOARDHTML);
@@ -976,6 +976,7 @@ public class HTTPHandler extends xtremweb.dispatcher.CommHandler {
 		getLogger().debug("oauthState = " + authState);
 		getLogger().debug("oauthEmail= " + authEmail);
 		getLogger().debug("oauthId= " + authId);
+		
 
 		final UserInterface user = getUser();
 
