@@ -99,8 +99,6 @@ function logout() {
  * This enables user to login
  */
 function login(username, password) {
-    // var username = $('#xwlogin')[0].value;
-    // var password = $('#xwpassword')[0].value;
     var credentialsHash =window.btoa(unescape(encodeURIComponent(username + ':' + password)));
 
     $.ajax({
@@ -108,9 +106,6 @@ function login(username, password) {
       method: "POST",
       headers: { 'Authorization': 'Basic ' + credentialsHash },
       crossDomain: true,
-      // complete: function () {
-      //   window.location.assign("/");
-      // }
     });
 }
 
