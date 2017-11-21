@@ -53,6 +53,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
   <script src="/xwserver.js" type="text/javascript"></script>
   <script src="/eth-auth-jwt.js"></script>
 
@@ -402,19 +403,19 @@
 			<h5>
 			Or use your login/password&nbsp;:
 			</h5>
-          <form role="form" method="post" action="/">
+    		<form role="form">
             <div class="form-group">
               <label for="xwlogin"><span class="glyphicon glyphicon-user"></span> Username</label>
-              <input type="text" class="form-control" id="xwlogin" name="XWLOGIN" placeholder="Enter login">
+              <input type="text" class="form-control" id="xwlogin" placeholder="Enter login">
             </div>
             <div class="form-group">
               <label for="xwpassword"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <input type="password" class="form-control" id="xwpassword" name="XWPASSWD" placeholder="Enter password">
+              <input type="password" class="form-control" id="xwpassword" placeholder="Enter password">
             </div>
             <div class="checkbox">
               <label><input type="checkbox" value="" checked>Remember me</label>
             </div>
-              <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+              <button class="btn btn-success btn-block" onclick="login(document.getElementById('xwlogin').value, document.getElementById('xwpassword').value)"><span class="glyphicon glyphicon-off"></span> Login</button>
           </form>
         </div>
         <div class="modal-footer">
@@ -426,6 +427,7 @@
       
     </div>
   </div> 
+
 
 </body>
 </html>

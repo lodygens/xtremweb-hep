@@ -96,6 +96,20 @@ function logout() {
 }
 
 /**
+ * This enables user to login
+ */
+function login(username, password) {
+    var credentialsHash =window.btoa(unescape(encodeURIComponent(username + ':' + password)));
+
+    $.ajax({
+      url: "/",
+      method: "POST",
+      headers: { 'Authorization': 'Basic ' + credentialsHash },
+      crossDomain: true,
+    });
+}
+
+/**
  * These variables aim to colorize informations
  */
 var colors = ["#b0b0b0", "#e0e0e0"];
