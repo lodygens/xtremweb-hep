@@ -37,7 +37,7 @@ LABEL version="0.3"
 LABEL description="This creates a Docker image for the XWHEP worker"
 EXPOSE 4324 443
 
-ENV XWVERSION "12.2.0"
+ENV XWVERSION "11.5.0"
 
 
 #

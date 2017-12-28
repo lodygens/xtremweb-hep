@@ -530,11 +530,11 @@ ACTIVATIONDATE=* 20-7
 # XtremWeb needs to use some disk space to store temporary files.
 # If you need to use an other directory uncomment this line and specify your own
 #
-# Default is $JAVATMPDIR
+# Default is /tmp
 # Note : please use full path; don't use ~ or any variable (e.g. $HOME)
 #        they are not correctly interpreted
-# 18/12/17 : Docker cant mount-bind following symbolic links; please keep /tmp
-TMPDIR=/tmp
+#
+# TMPDIR=/tmp
 ####
 
 
@@ -553,17 +553,19 @@ TMPDIR=/tmp
 # it to "false" or comment it.
 # If true, you must set sandbox.path and sandbox.start.args below
 # Example with docker:
-# docker run -t -i --mount type=bind,src=<work_dir>,dst=/tmp/xwheppwd --mount type=bind,src=<app_dir>,dst=/tmp/xwhepapp -w /tmp/xwhep ubuntu /tmp/xwhepapp/<appname>
+# docker run -t -i --mount type=bind,src=`pwd`,dst=/tmp/xwhep -w /tmp/xwhep ubuntu /bin/bash
 #  SANDBOXENABLED=true
 #  SANDBOXPATH=docker
-#
-# Note on SANDBOXSTARTARGS:
-#    must contain the Docker image to launch
-#
-#  SANDBOXSTARTARGS=ubuntu
-#
+#  SANDBOXSTARTARGS=-t -i --mount type=bind,src=`pwd`,dst=/tmp/xwhep -w /tmp/xwhep ubuntu /tmp/xwhep/
 # Default is false
 # SANDBOXENABLED=true
+
+# give here the full path and name of the sandbox system and the
+# command line arguments without quotes
+#
+# UNDER MAC OS >= 10.5 you can use
+# SANDBOXPATH=/usr/bin/sandbox-exec
+# SANDBOXSTARTARGS=-f /usr/share/sandbox/xgridagentd_task_nobody.sb
 #
 # SANDBOXPATH=/path_to_sandbox/bin
 # SANDBOXSTARTARGS=

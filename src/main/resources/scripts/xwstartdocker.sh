@@ -80,10 +80,16 @@ fatal ()
   FORCE="$2"
   [ "$msg" ]  ||  msg="Ctrl+C"
   
-  echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  [FATAL] : $msg"
+  echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  FATAL : $msg"
   
   [ "$FORCE" = "TRUE" ]  &&  clean
- 
+  
+  ( [ "$VERBOSE" ]  &&  set -x
+    "$VBMGT"  controlvm  "$VMNAME"  poweroff  > /dev/null 2>&1 )
+  #
+  # Inside 'fatal', the VM state is unknown and possibly inconsistent.
+  # So, the above 'poweroff' request does NOT make much sense.
+  
   exit 1
 }
 
@@ -95,19 +101,16 @@ fatal ()
 clean ()
 {
   echo
-  echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  [INFO] clean : '${CONTAINERNAME}' '${IMAGENAME}' "
-
-  [ "$VERBOSE" ]  &&  echo  > /dev/stderr
-  [ "${CONTAINERNAME}" ]  ||  return
+  info_message  "clean '$VMNAME'"
   
-  ( [ "$VERBOSE" ]  &&  set -x
-	docker stop ${CONTAINERNAME} &&docker rm ${CONTAINERNAME} )
-  if [ ! -z "${IMAGENAME}" ] ; then 
-    ( [ "$VERBOSE" ] && set -x
-	  docker rmi ${IMAGENAME} )
-  else
-	  echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  [INFO] clean : no image to remove "
-  fi
+  [ "$VERBOSE" ]  &&  echo  > /dev/stderr
+  debug_message  "clean :  VMNAME='$VMNAME'"
+  [ "$VMNAME" ]  ||  return
+  
+  LOCKFILE="$LOCKPATH"_"$VMNAME"
+  
+  wait_for_other_virtualbox_management_to_finish  clean
+  info_message  "clean:  Retrieve VirtualBox info"
 }
 
 #=============================================================================
@@ -152,7 +155,7 @@ ROOTDIR="$(dirname "$0")"
 SCRIPTNAME="$(basename "$0")"
 
 if [ "${SCRIPTNAME#*.sh}" ]; then
-  SCRIPTNAME=xwstartdocker.sh
+  SCRIPTNAME=xwstartvm.sh
   VERBOSE=TRUE
   TESTINGONLY=''                         # Worker, so debug is NOT possible
 else
@@ -169,7 +172,7 @@ if [ "$TESTINGONLY" = "TRUE" ] ; then
   cd "$SAVDIR"
   XWCPULOAD=100
 else
-  [ -z "$XWJOBUID" ] && fatal "XWJOBUID is not set" TRUE
+  [ -z "$XWJOBUID" ] && fatal "XWJOBUID is not set"
 fi
 
 
@@ -177,7 +180,6 @@ IMAGENAME="xwimg_${XWJOBUID}"
 CONTAINERNAME="xwcontainer_${XWJOBUID}"
 DOCKERFILENAME="Dockerfile"
 
-ARGS=""
 
 while [ $# -gt 0 ]; do
   
@@ -196,10 +198,6 @@ while [ $# -gt 0 ]; do
       shift
       IMAGENAME="$1"
       ;;
-      
-      *)
-      ARGS="$ARGS $1"
-      ;;
   esac
 
   shift
@@ -209,15 +207,15 @@ done
 
 if [ -f ${DOCKERFILENAME} ] ; then
     docker build --force-rm --tag ${IMAGENAME} .
-else
-	IMAGENAME=""
 fi
 
-docker run --rm --name ${CONTAINERNAME} ${IMAGENAME} ${ARGS}
-
+docker run --name ${CONTAINERNAME} -ti ${IMAGENAME} /bin/bash
 
 # clean everything
-clean
+if [ "$TESTINGONLY" != "TRUE" ] ; then
+  docker stop ${CONTAINERNAME} &&docker rm ${CONTAINERNAME} && docker rmi ${IMAGENAME}
+fi
+
 
 exit 0
 ###########################################################

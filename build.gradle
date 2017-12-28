@@ -32,7 +32,6 @@ dependencies {
 
 
 import org.apache.tools.ant.filters.ReplaceTokens
-
 import java.time.Instant
 
 ant.importBuild 'jni.xml'
@@ -56,6 +55,8 @@ task createVersion(type: Copy) {
                                    VBRANCH   : 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
     ])
 }
+
+createVersion.dependsOn clean
 
 // the createVersion task should be called before compileJava
 compileJava.dependsOn createVersion
@@ -143,6 +144,10 @@ task copyMiscToDist(type: Copy) {
         include('xtremweb-' + version + '.jar')
         rename('xtremweb-' + version + '.jar', 'xtremweb.jar')
     }
+
+    into("/conf") {
+        from(resources + '/conf')
+    }
 }
 
 task mkdirKeystore(type: Exec) {
@@ -156,6 +161,7 @@ task copyScripts(type: Copy) {
     into(distBin)
     exclude('xwconfigure')
     exclude('/db-maintenance/xwsetversion.sql.in')
+    exclude('xwhepgenkeys.template')
     filter(ReplaceTokens, tokens: [
             prefix           : dist,
             datadir          : '../data',
@@ -190,8 +196,46 @@ task copyXwsetversion(type: Copy) {
     into(distBin + '/db-maintenance')
 }
 
+task copyXwhepgenkeys(type: Copy) {
+
+    into(dist+"/bin")
+
+    into(".") {
+        from(scripts)
+        include('xwhepgenkeys.template')
+        rename('xwhepgenkeys.template', 'xwhepgenkeys')
+        include('xwhepupdateopenidcerts.template')
+        rename('xwhepupdateopenidcerts.template', 'xwhepupdateopenidcerts')
+
+        def props = new Properties()
+        file(resources+"/conf"+'/xwconfigure.values').withInputStream {
+            props.load(it)
+        }
+
+        Set<String> keys = props.stringPropertyNames();
+        for (String key : keys) {
+            props.setProperty(key, props.getProperty(key).replace('\'',''));
+        }
+
+        def certname = "cn=" + props.CERTCN + ",o=" + props.CERTO + ",c=" + props.CERTC
+        if (props.CERTOU != "") {
+            certname += ",ou=" + props.CERTOU
+        }
+        if (props.CERTL != "") {
+            certname += ",l=" + props.CERTL
+        }
+
+        filter(ReplaceTokens, tokens: [CERTNAME: certname], beginToken: '$', endToken: '')
+        filter(ReplaceTokens, tokens: props, beginToken: '$SAFE_', endToken: '')
+        filter(ReplaceTokens, tokens: [XWSERVER: props.XWSERVER], beginToken: '${', endToken: '}')
+        props.remove("XWSERVER")
+        filter(ReplaceTokens, tokens: props, beginToken: '$', endToken: '')
+    }
+
+}
+
 task chmodBin(type: Exec) {
-    dependsOn(copyMiscToDist, copyScripts, copyXwconfigure, copyXwsetversion, mkdirKeystore)
+    dependsOn(copyMiscToDist, copyScripts, copyXwconfigure, copyXwhepgenkeys, copyXwsetversion, mkdirKeystore)
     commandLine("sh", "-c",
             "chmod -R 755 " + distBin + " && " +
                     "find " + distBin + " -iname *.sql* -exec chmod -x {} +" + " && " +
@@ -470,13 +514,9 @@ task copyLinux(type: Copy) {
 }
 
 
-task install {
+
+task buildAll {
     dependsOn(chmodBin, copyWindowsClient, copyWindowsWorker, copyWindowsVWorker, copyMacClient, copyMacWorker, copyMacVworker, copyMacServer, copyLinux)
 }
 
-
-
-
-
-
-
+buildAll.dependsOn getTasksByName('build', true)

@@ -42,7 +42,7 @@ LABEL version="0.4"
 LABEL description="This downloads and compiles XWHEP server"
 EXPOSE 4321 4322 4323 443
 
-ENV XWVERSION "12.2.0"
+ENV XWVERSION "11.5.0"
 
 # next is only to check file is present
 # before getting time to apt-get update etc.
@@ -62,7 +62,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get install -y openjdk-8-jdk my
 #RUN service mysql start
 RUN wget https://github.com/lodygens/xtremweb-hep/archive/master.zip
 RUN unzip master.zip
-RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ && cd /xwhep/xtremweb-hep-master/build/ && make clean && make
+RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ && cd /xwhep/xtremweb-hep-master/ && ./gradlew buildAll
 RUN cp /xwhep/xwconfigure.values /xwhep/xtremweb-hep-master/build/dist/xwhep-$XWVERSION/conf/
 RUN service mysql start && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ && cd /xwhep/xtremweb-hep-master/build/dist/xwhep-$XWVERSION/  && ./bin/xwconfigure --yes || ./bin/xwconfigure --yes
 
