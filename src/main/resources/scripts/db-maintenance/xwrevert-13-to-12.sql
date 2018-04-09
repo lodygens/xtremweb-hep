@@ -3,9 +3,9 @@
 --  Authors        : Oleg Lodygensky
 --  Acknowledgment : XtremWeb-HEP is based on XtremWeb 1.8.0 by inria : http://www.xtremweb.net/
 --  Web            : http://www.xtremweb-hep.org
---  
+--
 --       This file is part of XtremWeb-HEP.
--- 
+--
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
@@ -33,6 +33,9 @@ ALTER TABLE  works DROP   COLUMN maxCpuSpeed;
 
 ALTER TABLE  works ADD    COLUMN wallclocktime int(10)                   comment 'Wallclocktime : how many seconds a job can be computed.  The job is stopped as the wall clocktime is reached.  If < 0, the job is not stopped.';
 ALTER TABLE  works ADD    COLUMN diskSpace bigint             default 0  comment 'Optionnal. disk space needed  This is in Mb';
+
+ALTER TABLE  datas DROP   COLUMN shasum;
+ALTER TABLE  datas_history DROP   COLUMN shasum;
 
 --
 -- remove status FAILED

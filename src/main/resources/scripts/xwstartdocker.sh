@@ -80,83 +80,83 @@ esac
 # next array contains forbidden docker parameters
 # These must be a copy of xtremweb.common.AppTypeEnum#dockerForbiddenParams
 #
-dockerForbiddenParams=(	"--add-host"\
-                              "--attach"\
-                              "--blkio-weight"\
-                              "--blkio-weight-device"\
-                              "--cap-add"\
-                              "--cap-drop"\
-                              "--cgroup-parent"\
-                              "--cidfile"\
-                              "--cpu-period"\
-                              "--cpu-quota"\
-                              "--cpu-rt-period"\
-                              "--cpu-rt-runtime"\
-                              "--cpu-shares"\
-                              "--cpus"\
-                              "--cpuset-cpus"\
-                              "--cpuset-mems"\
-                              "--detach"\
-                              "--detach-keys"\
-                              "--device"\
-                              "--device-cgroup-rule"\
-                              "--device-read-bps"\
-                              "--device-read-iops"\
-                              "--device-write-bps"\
-                              "--device-write-iops"\
-                              "--dns"\
-                              "--dns-option"\
-                              "--dns-search"\
-                              "--entrypoint"\
-                              "--expose"\
-                              "--group-add"\
-                              "--health-cmd"\
-                              "--health-interval"\
-                              "--health-retries"\
-                              "--health-start-period"\
-                              "--health-timeout"\
-                              "--hostname"\
-                              "--init"\
-                              "--interactive"\
-                              "--ip"\
-                              "--ip6"\
-                              "--ipc"\
-                              "--isolation"\
-                              "--kernel-memory"\
-                              "--link"\
-                              "--link-local-ip"\
-                              "--log-driver"\
-                              "--mac-address"\
-                              "--memory"\
-                              "--memory-reservation"\
-                              "--memory-swap"\
-                              "--memory-swappiness"\
-                              "--mount"\
-                              "--network"\
-                              "--network-alias"\
-                              "--no-healthcheck"\
-                              "--oom-kill-disable"\
-                              "--oom-score-adj"\
-                              "--pids-limit"\
-                              "--platform"\
-                              "--privileged"\
-                              "--runtime"\
-                              "--security-opt"\
-                              "--shm-size"\
-                              "--sig-proxy"\
-                              "--stop-signal"\
-                              "--stop-timeout"\
-                              "--storage-opt"\
-                              "--sysctl"\
-                              "--tmpfs"\
-                              "--ulimit"\
-                              "--user"\
-                              "--userns"\
-                              "--uts"\
-                              "--volume-driver"\
-                              "--volumes-from"\
-                              "--volume"\
-                              "--workdir")
+dockerForbiddenParams="--add-host"
+dockerForbiddenParams="--attach"
+dockerForbiddenParams="${dockerForbiddenParams} --blkio-weight"
+dockerForbiddenParams="${dockerForbiddenParams} --blkio-weight-device"
+dockerForbiddenParams="${dockerForbiddenParams} --cap-add"
+dockerForbiddenParams="${dockerForbiddenParams} --cap-drop"
+dockerForbiddenParams="${dockerForbiddenParams} --cgroup-parent"
+dockerForbiddenParams="${dockerForbiddenParams} --cidfile"
+dockerForbiddenParams="${dockerForbiddenParams} --cpu-period"
+dockerForbiddenParams="${dockerForbiddenParams} --cpu-quota"
+dockerForbiddenParams="${dockerForbiddenParams} --cpu-rt-period"
+dockerForbiddenParams="${dockerForbiddenParams} --cpu-rt-runtime"
+dockerForbiddenParams="${dockerForbiddenParams} --cpu-shares"
+dockerForbiddenParams="${dockerForbiddenParams} --cpus"
+dockerForbiddenParams="${dockerForbiddenParams} --cpuset-cpus"
+dockerForbiddenParams="${dockerForbiddenParams} --cpuset-mems"
+dockerForbiddenParams="${dockerForbiddenParams} --detach"
+dockerForbiddenParams="${dockerForbiddenParams} --detach-keys"
+dockerForbiddenParams="${dockerForbiddenParams} --device"
+dockerForbiddenParams="${dockerForbiddenParams} --device-cgroup-rule"
+dockerForbiddenParams="${dockerForbiddenParams} --device-read-bps"
+dockerForbiddenParams="${dockerForbiddenParams} --device-read-iops"
+dockerForbiddenParams="${dockerForbiddenParams} --device-write-bps"
+dockerForbiddenParams="${dockerForbiddenParams} --device-write-iops"
+dockerForbiddenParams="${dockerForbiddenParams} --dns"
+dockerForbiddenParams="${dockerForbiddenParams} --dns-option"
+dockerForbiddenParams="${dockerForbiddenParams} --dns-search"
+dockerForbiddenParams="${dockerForbiddenParams} --entrypoint"
+dockerForbiddenParams="${dockerForbiddenParams} --expose"
+dockerForbiddenParams="${dockerForbiddenParams} --group-add"
+dockerForbiddenParams="${dockerForbiddenParams} --health-cmd"
+dockerForbiddenParams="${dockerForbiddenParams} --health-interval"
+dockerForbiddenParams="${dockerForbiddenParams} --health-retries"
+dockerForbiddenParams="${dockerForbiddenParams} --health-start-period"
+dockerForbiddenParams="${dockerForbiddenParams} --health-timeout"
+dockerForbiddenParams="${dockerForbiddenParams} --hostname"
+dockerForbiddenParams="${dockerForbiddenParams} --init"
+dockerForbiddenParams="${dockerForbiddenParams} --interactive"
+dockerForbiddenParams="${dockerForbiddenParams} --ip"
+dockerForbiddenParams="${dockerForbiddenParams} --ip6"
+dockerForbiddenParams="${dockerForbiddenParams} --ipc"
+dockerForbiddenParams="${dockerForbiddenParams} --isolation"
+dockerForbiddenParams="${dockerForbiddenParams} --kernel-memory"
+dockerForbiddenParams="${dockerForbiddenParams} --link"
+dockerForbiddenParams="${dockerForbiddenParams} --link-local-ip"
+dockerForbiddenParams="${dockerForbiddenParams} --log-driver"
+dockerForbiddenParams="${dockerForbiddenParams} --mac-address"
+dockerForbiddenParams="${dockerForbiddenParams} --memory"
+dockerForbiddenParams="${dockerForbiddenParams} --memory-reservation"
+dockerForbiddenParams="${dockerForbiddenParams} --memory-swap"
+dockerForbiddenParams="${dockerForbiddenParams} --memory-swappiness"
+dockerForbiddenParams="${dockerForbiddenParams} --mount"
+dockerForbiddenParams="${dockerForbiddenParams} --network"
+dockerForbiddenParams="${dockerForbiddenParams} --network-alias"
+dockerForbiddenParams="${dockerForbiddenParams} --no-healthcheck"
+dockerForbiddenParams="${dockerForbiddenParams} --oom-kill-disable"
+dockerForbiddenParams="${dockerForbiddenParams} --oom-score-adj"
+dockerForbiddenParams="${dockerForbiddenParams} --pids-limit"
+dockerForbiddenParams="${dockerForbiddenParams} --platform"
+dockerForbiddenParams="${dockerForbiddenParams} --privileged"
+dockerForbiddenParams="${dockerForbiddenParams} --runtime"
+dockerForbiddenParams="${dockerForbiddenParams} --security-opt"
+dockerForbiddenParams="${dockerForbiddenParams} --shm-size"
+dockerForbiddenParams="${dockerForbiddenParams} --sig-proxy"
+dockerForbiddenParams="${dockerForbiddenParams} --stop-signal"
+dockerForbiddenParams="${dockerForbiddenParams} --stop-timeout"
+dockerForbiddenParams="${dockerForbiddenParams} --storage-opt"
+dockerForbiddenParams="${dockerForbiddenParams} --sysctl"
+dockerForbiddenParams="${dockerForbiddenParams} --tmpfs"
+dockerForbiddenParams="${dockerForbiddenParams} --ulimit"
+dockerForbiddenParams="${dockerForbiddenParams} --user"
+dockerForbiddenParams="${dockerForbiddenParams} --userns"
+dockerForbiddenParams="${dockerForbiddenParams} --uts"
+dockerForbiddenParams="${dockerForbiddenParams} --volume-driver"
+dockerForbiddenParams="${dockerForbiddenParams} --volumes-from"
+dockerForbiddenParams="${dockerForbiddenParams} --volume"
+dockerForbiddenParams="${dockerForbiddenParams} --workdir"
 
 
 #=============================================================================
@@ -164,14 +164,14 @@ dockerForbiddenParams=(	"--add-host"\
 #  Function  isForbidden (param)
 #
 #=============================================================================
-isForbidden()
-{
+isForbidden(){
     param=$1
-    for item in ${dockerForbiddenParams[*]}
+    for item in ${dockerForbiddenParams}
     do
         [ ${param} = ${item} ] && debug "${param} is forbidden" && return 1
     done
     debug "${param} is not forbidden"
+    return 0
 }
 
 
@@ -203,6 +203,7 @@ warning ()
 {
   msg="$1"
   echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  WARNING : $msg"
+  return 0
 }
 
 #=============================================================================
@@ -214,6 +215,19 @@ info ()
 {
   msg="$1"
   echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  INFO : $msg"
+  return 0
+}
+
+#=============================================================================
+#
+#  Function  debug (Message)
+#
+#=============================================================================
+debug ()
+{
+  msg="$1"
+  [ "${TESTINGONLY}" = "TRUE" ] && echo  "$(date "$DATE_FORMAT")  $SCRIPTNAME  DEBUG : $msg"
+  return 0
 }
 
 #=============================================================================
@@ -272,7 +286,7 @@ trap  fatal  INT  TERM
 SCRIPTNAME="$(basename "$0")"
 
 if [ "${SCRIPTNAME#*.sh}" ]; then
-  SCRIPTNAME=xwstartdocker  .sh
+  SCRIPTNAME=xwstartdocker.sh
   VERBOSE=TRUE
   TESTINGONLY=''                         # Worker, so debug is NOT possible
 else
@@ -304,8 +318,7 @@ DOCKERFILENAME="Dockerfile"
 
 while [ $# -gt 0 ]; do
 
-# 5 avril 2018: not tested yet !
-#  isForbidden $1 || fatal "forbidden param $1"
+  isForbidden $1 || fatal "forbidden param $1"
 
   case "$1" in
 

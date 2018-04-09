@@ -3,9 +3,9 @@
 --  Authors        : Oleg Lodygensky
 --  Acknowledgment : XtremWeb-HEP is based on XtremWeb 1.8.0 by inria : http://www.xtremweb.net/
 --  Web            : http://www.xtremweb-hep.org
---  
+--
 --       This file is part of XtremWeb-HEP.
--- 
+--
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
@@ -37,8 +37,7 @@ create table if not exists  envs  (
 
   index  name     (name),
   index  envId    (envId),
-  index  ownerUID (ownerUID),
-  foreign key (owneruid) references users(uid)
+  index  ownerUID (ownerUID)
   )
 engine  = InnoDB,
 comment = 'envs = envelopes defining resources usage limit';
@@ -58,9 +57,14 @@ ALTER TABLE  works ADD    COLUMN maxCpuSpeed        float          not null  def
 ALTER TABLE  works DROP   COLUMN wallclocktime;
 ALTER TABLE  works DROP   COLUMN diskSpace;
 
+ALTER TABLE datas ADD COLUMN shasum varchar(254) comment 'Shasum for datas';
+ALTER TABLE datas_history ADD COLUMN shasum varchar(254) comment 'Shasum for datas';
+
 UPDATE works SET envid='1', maxWallClocktime='300', maxFreeMassStorage='5368709120', maxFileSize='104857600', maxMemory='536870912', maxCpuSpeed='0.5';
 
-insert into statuses (statusId, statusName, statusObjects, statusComment, statusDeprecated) values (14, 'FAILED',        'works',               'The job does not fill its envelope requirements',                                   null);
+insert into statuses (statusId, statusName, statusObjects, statusComment, statusDeprecated) values (14, 'FAILED', 'works', 'The job does not fill its envelope requirements', null);
+
+insert into versions (version, installation) values ('13.0.0', now());
 --
 -- End Of File
 --
