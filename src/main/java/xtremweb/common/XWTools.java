@@ -215,7 +215,7 @@ public class XWTools {
 	 */
 	public static final long TWOGIGABYTES = 2 * ONEGIGABYTES;
 	/**
-	 * This defines the default wall cloacktime to 3600s (1h)
+	 * This defines the default wall cloacktime to 900s (15mn)
 	 * @since 13.0.0
 	 */
 	public static final int DEFAULTWALLCLOCKTIME = 900;
