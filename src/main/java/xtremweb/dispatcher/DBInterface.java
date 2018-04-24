@@ -1080,159 +1080,6 @@ public final class DBInterface {
     }
 
 	/**
-	 * This creates a new readable market order to retrieve from DB
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @since 13.0.5
-	 */
-	private MarketOrderInterface readableMarketOrder(final UserInterface u) throws IOException {
-		return readableObject(new MarketOrderInterface(), u);
-	}
-	/**
-	 * This creates a new readable market order to retrieve from DB
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @param uid
-	 *            is the UID of the market order to retrieve
-	 * @since 13.0.5
-	 */
-	private MarketOrderInterface readableMarketOrder(final UserInterface u, final UID uid) throws IOException {
-		return readableObject(new MarketOrderInterface(), u, uid);
-	}
-
-	/**
-	 * This creates a new readable market order to retrieve market order UID from DB
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @since 13.0.5
-	 */
-	private MarketOrderInterface readableMarketOrderUID(final UserInterface u) throws IOException {
-		return readableObjectUID(new MarketOrderInterface(), u);
-	}
-
-	/**
-	 * This retrieves a market order for the requesting user. readable market access rights
-	 * are checked.
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @param uid
-	 *            is the UID of the readable market to retrieve
-	 * @since 13.0.5
-	 */
-	protected MarketOrderInterface marketOrder(final UserInterface u, final UID uid)
-			throws IOException, AccessControlException {
-
-		if (uid == null) {
-			return null;
-		}
-		final MarketOrderInterface row = new MarketOrderInterface();
-		final MarketOrderInterface ret = getFromCache(u, uid, row);
-		if (ret != null) {
-			return ret;
-		}
-		final MarketOrderInterface readableRow = readableMarketOrder(u, uid);
-		return select(readableRow);
-	}
-
-	/**
-	 * This retrieves a market order
-	 *
-	 * @param command
-	 * @return a market order interface
-	 * @since 13.0.5
-	 */
-	protected MarketOrderInterface marketOrder(final XMLRPCCommand command) throws InvalidKeyException, IOException, AccessControlException {
-		final UID uid = command.getURI().getUID();
-		if (uid == null) {
-			return null;
-		}
-
-		final MarketOrderInterface row = new MarketOrderInterface();
-		final UserInterface mandatingClient = checkClient(command, UserRightEnum.GETMARKETORDER);
-		final MarketOrderInterface ret = getFromCache(mandatingClient, uid, row);
-		if (ret != null) {
-			return ret;
-		}
-		final MarketOrderInterface readableRow = readableMarketOrder(mandatingClient, uid);
-		return select(readableRow);
-	}
-	/**
-	 * This retrieves a market order from DB for the requesting user according to
-	 * conditions
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @param conditions
-	 *            restrict selected rows
-	 * @return the last loaded row
-	 * @since 13.0.5
-	 */
-	protected MarketOrderInterface marketOrder(final UserInterface u, final String conditions) throws IOException {
-		final MarketOrderInterface row = readableMarketOrder(u);
-		return selectOne(row, conditions);
-	}
-
-	/**
-	 * This retrieves a market order from DB for the requesting user
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @return a Collection of market order
-	 * @since 13.0.5
-	 */
-	protected Collection<MarketOrderInterface> marketOrder(final UserInterface u) throws IOException {
-		final MarketOrderInterface row = readableMarketOrder(u);
-		return selectAll(row);
-	}
-
-	/**
-	 * This retrieves market order UID from DB for the requesting user
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @return a Collection of UID
-	 * @since 13.0.5
-	 */
-	protected Collection<UID> marketOrdersUID(final UserInterface u) throws IOException {
-		return marketOrdersUID(u, (String) null);
-	}
-
-	/**
-	 * This retrieves a market order from DB for the requesting user according to
-	 * criteria
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @return a Collection of UID
-	 * @since 13.0.5
-	 */
-	protected Collection<UID> marketOrdersUID(final UserInterface u, final String criterias) throws IOException {
-		final MarketOrderInterface row = readableMarketOrderUID(u);
-		return selectUID(row, criterias);
-	}
-
-	/**
-	 * This retrieves the number of market order
-	 *
-	 * @param u
-	 *            is the requesting user
-	 * @return how many market order exist
-	 * @since 13.0.5
-	 */
-	protected int marketOrdersSize(final UserInterface u) throws IOException {
-		try {
-			marketOrdersUID(u).size();
-		} catch (final Exception e) {
-		}
-		return 0;
-	}
-
-
-	/**
 	 * This creates a new readable group to retrieve from DB
 	 *
 	 * @param u
@@ -3849,13 +3696,6 @@ public final class DBInterface {
             }
         } catch (final AccessControlException e) {
         }
-        try {
-            ret = getMarketOrder(command);
-            if (ret != null) {
-                return ret;
-            }
-        } catch (final AccessControlException e) {
-        }
 
 		return null;
 	}
@@ -4952,10 +4792,6 @@ public final class DBInterface {
             // reset limits to defaults
             receivedJob.setCategoryId(0);
         }
-
-        final MarketOrderInterface receivedJobMarketOrder = select(new CategoryInterface(),
-                "maintable." + CategoryInterface.Columns.CATEGORYID.toString() + "='" + receivedJob.getCategoryId() + "'");
-
         final WorkInterface theWork = work(mandatingClient, jobUID);
 		if (theWork != null) {
 			if (theWork.canWrite(mandatingClient, appOwnerGroup) || clientRights.higherOrEquals(UserRightEnum.WORKER_USER)) {
@@ -5284,6 +5120,7 @@ public final class DBInterface {
 		final UserInterface theClient = checkClient(command, UserRightEnum.LISTCATEGORY);
 		return categoriesUID(theClient);
 	}
+
 	/**
 	 * This calls category(command)
 	 *
@@ -5294,11 +5131,13 @@ public final class DBInterface {
 			throws IOException, InvalidKeyException, AccessControlException {
 		return category(command);
 	}
+
+
     /**
      * This adds/updates an category
      *
      * @param u is the requestor
-     * @param catItf is the category
+	 * @param catItf is the category
      * @return true on success; false on DB error or group already exists
      * @exception IOException
      *                is thrown on DB access or I/O error
@@ -5322,55 +5161,15 @@ public final class DBInterface {
 
         if (catItf.getUID() == null) {
             final UID uid = new UID();
-            catItf.setUID(uid);
+			catItf.setUID(uid);
         }
         if (catItf.getOwner() == null) {
-            catItf.setOwner(theClient.getUID());
+			catItf.setOwner(theClient.getUID());
         }
         insert(catItf);
 
         // read from DB, in case some values are null (and set to default by insert db)
         DBConnPoolThread.getInstance().putToCache(category(theClient, "maintable.uid='" + catItf.getUID() + "'"));
-
-        return true;
-    }
-    /**
-     * This adds/updates a market order
-     *
-     * @param u is the requestor
-     * @param moitf is the market order
-     * @return true on success; false on DB error or group already exists
-     * @exception IOException
-     *                is thrown on DB access or I/O error
-     * @exception InvalidKeyException
-     *                is thrown on client integrity error (user unknown, bad
-     *                password...)
-     * @exception AccessControlException
-     *                is thrown if client does not have enough rights
-     * @since 13.0.5
-     */
-    protected boolean addMarketOrder(final UserInterface u, final CategoryInterface moitf)
-            throws IOException, InvalidKeyException, AccessControlException, URISyntaxException {
-
-        final UserInterface theClient = checkClient(u, UserRightEnum.INSERTMARKETORDER);
-        final MarketOrderInterface marketOrder = marketOrder(theClient, moitf.getUID());
-        if (marketOrder != null) {
-            marketOrder.updateInterface(moitf);
-            update(theClient, UserRightEnum.INSERTMARKETORDER, marketOrder);
-            return true;
-        }
-
-        if (moitf.getUID() == null) {
-            final UID uid = new UID();
-            moitf.setUID(uid);
-        }
-        if (moitf.getOwner() == null) {
-            moitf.setOwner(theClient.getUID());
-        }
-        insert(moitf);
-
-        // read from DB, in case some values are null (and set to default by insert db)
-        DBConnPoolThread.getInstance().putToCache(category(theClient, "maintable.uid='" + moitf.getUID() + "'"));
 
         return true;
     }

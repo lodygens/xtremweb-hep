@@ -42,49 +42,7 @@ create table if not exists  categories  (
 engine  = InnoDB,
 comment = 'envs = categories defining resources usage limit';
 
-show warnings;
-
 create table if not exists  categories_history  like  categories;
-
-show warnings;
-
-
--- ---------------------------------------------------------------------------
--- Table "categories" :
--- This table contains "marketorders" that can be created wy the scheduler
--- Since 13.0.5
--- ---------------------------------------------------------------------------
-create table if not exists  marketorders (
-  uid                  char(36)       not null  primary key        comment 'Primary key',
-  ownerUID             char(36)       not null                     comment 'User UID',
-  accessRights         int(4)                   default 0x755      comment 'Please note that a category is always public',
-  errorMsg             varchar(254)                                comment 'Error message',
-  mtime                timestamp                                   comment 'Timestamp of last update',
-  direction            char(25)       not null  default 'UNSET'    comment 'Please see MarketOrderDirectionEnum',
-  categoryId           bigint         not null                     comment 'catID reference',
-  expectedWorkers      bigint         not null                     comment 'how many workers to safely reach the trust',
-  nbWorkers            bigint         not null                     comment 'how many workers alredy booked',
-  trust                bigint         not null  default 0          comment 'trust expected',
-  price                bigint         not null  default 0          comment 'this is the cost or the price, depending on direction; this is named value in smart contract',
-  volume               bigint         not null  default 0          comment 'how many such orders the scheduler can propose',
-  remaining            bigint         not null  default 0          comment 'how many such orders left',
-  workerpooladdr       varchar(254)   not null                     comment 'workerpool smart contract address',
-  workerpoolowneraddr  varchar(254)   not null                     comment 'workerpool owner address',
-
-  index  idx_catgoryid         (categoryid),
-  index  idx_workerpooladdr    (workerpooladdr),
-  index  ownerUID (ownerUID),
-  foreign key (owneruid) references users(uid)
-  )
-engine  = InnoDB,
-comment = 'marketorders = marketorders to sell CPU power';
-
-show warnings;
-
-create table if not exists  marketorders_history  like  marketorders;
-
-show warnings;
-
 
 ALTER TABLE  works ADD    COLUMN categoryId          bigint                   default 0        comment 'categoryId. See common/CategoryInterface.java';
 ALTER TABLE  works ADD    COLUMN marketOrderId       int unsigned             default 0            comment 'blockchain market order id';

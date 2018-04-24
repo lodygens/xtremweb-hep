@@ -44,9 +44,6 @@ dependencies {
     compile "antlr:antlr:2.7.2"// ? https://mvnrepository.com/artifact/antlr/antlr
     compile "org.json:json:20160810" // ? https://mvnrepository.com/artifact/org.json/json
     compile "org.web3j:core:3.2.0"
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
-    compile group: 'org.apache.directory.studio', name: 'org.apache.commons.io', version: '2.4'
-
 
     compile 'ch.qos.logback:logback-classic:1.0.13'
 

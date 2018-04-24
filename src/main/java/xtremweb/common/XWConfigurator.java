@@ -74,7 +74,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.swing.JMenuItem;
 
 import com.iexec.common.ethereum.CommonConfiguration;
-import com.iexec.common.ethereum.CredentialsService;
 import com.iexec.common.ethereum.IexecConfigurationService;
 import com.iexec.common.workerpool.WorkerPoolConfig;
 import org.web3j.crypto.CipherException;
@@ -2413,16 +2412,15 @@ public final class XWConfigurator extends Properties {
 				(blockchainServices) && (IexecConfigurationService.getInstance() != null) &&
 				(IexecConfigurationService.getInstance().getCommonConfiguration() != null)) {
 
-			final CommonConfiguration commonConfiguration = IexecConfigurationService.getInstance().getCommonConfiguration();
-			out.println("Wallet     addr     : " + CredentialsService.getInstance().getCredentials().getAddress());
-			out.println("Eth client addr     : " + commonConfiguration.getNodeConfig().getClientAddress());
-			out.println("iExec Hub  addr     : " + commonConfiguration.getContractConfig().getIexecHubAddress());
-			out.println("iExec RLC  addr     : " + commonConfiguration.getContractConfig().getRlcAddress());
-			WorkerPoolConfig workerPoolConfig = commonConfiguration.getContractConfig().getWorkerPoolConfig();
-			if (workerPoolConfig != null) {
-				out.println("iExec WorkerPool name : " + workerPoolConfig.getName());
-				out.println("iExec WorkerPool addr : " + workerPoolConfig.getAddress());
-			}
+				CommonConfiguration commonConfiguration = IexecConfigurationService.getInstance().getCommonConfiguration();
+				out.println("Eth client addr     : " + commonConfiguration.getNodeConfig().getClientAddress());
+				out.println("iExec Hub  addr     : " + commonConfiguration.getContractConfig().getIexecHubAddress());
+				out.println("iExec RLC  addr     : " + commonConfiguration.getContractConfig().getRlcAddress());
+				WorkerPoolConfig workerPoolConfig = commonConfiguration.getContractConfig().getWorkerPoolConfig();
+				if (workerPoolConfig != null) {
+					out.println("iExec WorkerPool name : " + workerPoolConfig.getName());
+					out.println("iExec WorkerPool addr : " + workerPoolConfig.getAddress());
+				}
 		} else {
 			out.println("Blockchain service : disabled");
 		}

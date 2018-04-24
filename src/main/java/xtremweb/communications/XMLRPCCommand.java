@@ -870,18 +870,6 @@ public abstract class XMLRPCCommand extends XMLable {
 		try {
 			input.reset();
 			input.mark(XWTools.BUFFEREND);
-			return new XMLRPCCommandGetMarketOrders(input);
-		} catch (final SAXException e) {
-			if (e instanceof XMLEndParseException) {
-				return ret;
-			}
-		} catch (final InvalidKeyException e) {
-			logger.exception(e);
-		}
-		logger.finest("not a command getmarketorders");
-		try {
-			input.reset();
-			input.mark(XWTools.BUFFEREND);
 			return new XMLRPCCommandGetCategoryById(input);
 		} catch (final SAXException e) {
 			if (e instanceof XMLEndParseException) {

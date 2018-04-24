@@ -201,29 +201,9 @@ interface ClientAPI {
 	 *
 	 * @return a Vector of UIDs
 	 * @since 13.0.0
-	 * @see xtremweb.common.XWTools#MAXDBREQUESTLIMIT
+     * @see xtremweb.common.XWTools#MAXDBREQUESTLIMIT
 	 */
 	XMLVector getCategories(XMLRPCCommandGetCategories command)
-			throws InvalidKeyException, AccessControlException, IOException, SAXException;
-
-	/**
-	 * This retrieves all market orders from server, up to MAXDBREQUESTLIMIT
-	 *
-	 * @return a Vector of UIDs
-	 * @since 13.0.5
-	 * @see xtremweb.common.XWTools#MAXDBREQUESTLIMIT
-	 */
-	XMLVector getMarketOrders()
-			throws InvalidKeyException, AccessControlException, IOException, SAXException, URISyntaxException;
-
-	/**
-	 * This retrieves all market orders from server, up to MAXDBREQUESTLIMIT
-	 *
-	 * @return a Vector of UIDs
-	 * @since 13.0.5
-	 * @see xtremweb.common.XWTools#MAXDBREQUESTLIMIT
-	 */
-	XMLVector getMarketOrders(XMLRPCCommandGetMarketOrders command)
 			throws InvalidKeyException, AccessControlException, IOException, SAXException;
 
 	/**

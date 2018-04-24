@@ -1915,40 +1915,6 @@ public abstract class CommClient implements ClientAPI {
 	}
 
 	/**
-	 * This retrieves all market orders from server
-	 *
-	 * @return a vector of UIDs
-	 * @since 13.0.5
-	 */
-	@Override
-	public XMLVector getMarketOrders()
-			throws InvalidKeyException, AccessControlException, IOException, SAXException, URISyntaxException {
-
-		final URI uri = newURI();
-		final XMLRPCCommandGetMarketOrders cmd = new XMLRPCCommandGetMarketOrders(uri, config.getUser());
-		return getMarketOrders(cmd);
-	}
-
-	/**
-	 * This retrieves all market orders from server
-	 *
-	 * @return a vector of UIDs
-	 * @since 13.0.5
-	 */
-	@Override
-	public XMLVector getMarketOrders(final XMLRPCCommandGetMarketOrders command)
-			throws InvalidKeyException, AccessControlException, IOException, SAXException {
-
-		XMLVector xmlv = null;
-		try {
-			sendCommand(command);
-			xmlv = newXMLVector();
-		} finally {
-			close();
-		}
-		return xmlv;
-	}
-	/**
 	 * This retrieves all categories from server
 	 *
 	 * @return a vector of UIDs

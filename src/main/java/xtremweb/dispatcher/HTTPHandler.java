@@ -57,7 +57,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iexec.common.ethereum.CommonConfiguration;
 import com.iexec.common.ethereum.IexecConfigurationService;
 import com.iexec.common.workerpool.WorkerPoolConfig;
@@ -763,9 +762,19 @@ public class HTTPHandler extends xtremweb.dispatcher.CommHandler {
             if (getConfig().getBoolean(BLOCKCHAINETHENABLED) == true) {
                 final PrintWriter writer = response.getWriter();
                 final StringBuilder msg = new StringBuilder();
+                if ((IexecConfigurationService.getInstance() != null) &&
+                        (IexecConfigurationService.getInstance().getCommonConfiguration() != null)) {
+                    CommonConfiguration commonConfiguration = IexecConfigurationService.getInstance().getCommonConfiguration();
+                    msg.append(XWTools.IEXECHUBADDRTEXT + commonConfiguration.getContractConfig().getIexecHubAddress() + "\n");
+                    msg.append(XWTools.IEXECRLCADDRTEXT + commonConfiguration.getContractConfig().getRlcAddress() + "\n");
+                    msg.append(XWTools.ETHNODEADDRTEXT + commonConfiguration.getNodeConfig().getClientAddress() + "\n");
+                    WorkerPoolConfig workerPoolConfig = commonConfiguration.getContractConfig().getWorkerPoolConfig();
+                    if (workerPoolConfig != null) {
+                        msg.append(XWTools.IEXECWORKERPOOLADDRTEXT + workerPoolConfig.getAddress() + "\n");
+                        msg.append(XWTools.IEXECWORKERPOOLNAMETEXT + workerPoolConfig.getName() + "\n");
+                    }
+                }
 
-				ObjectMapper mapper = new ObjectMapper();
-				msg.append(mapper.writeValueAsString(IexecConfigurationService.getInstance().getCommonConfiguration()));
                 response.setContentType(TEXTPLAIN + ";charset=UTF-8");
                 response.setHeader(CONTENTLENGTHLABEL, "" + msg.length());
                 writer.println(msg);

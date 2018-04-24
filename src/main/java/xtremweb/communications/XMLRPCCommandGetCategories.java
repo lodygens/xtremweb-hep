@@ -35,7 +35,7 @@ import java.security.InvalidKeyException;
 /**
  * This class defines the XMLRPCCommand to retrieve categories UID
  *
- * @author Oleg Lodygensky
+ * @author <a href="mailto:lodygens /a|t\ lal.in2p3.fr>Oleg Lodygensky</a>
  * @since 13.0.0
  */
 public class XMLRPCCommandGetCategories extends XMLRPCCommand {

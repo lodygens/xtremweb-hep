@@ -29,16 +29,12 @@ import java.util.Properties;
 
 import javax.naming.ConfigurationException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iexec.common.ethereum.CommonConfiguration;
 import com.iexec.common.ethereum.ContractConfig;
-import com.iexec.common.ethereum.IexecConfigurationService;
 import com.iexec.common.ethereum.NodeConfig;
 import com.iexec.common.workerpool.WorkerPoolConfig;
 import com.iexec.worker.ethereum.CommonConfigurationGetter;
 import com.iexec.worker.ethereum.IexecWorkerLibrary;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 import xtremweb.common.*;
 import xtremweb.communications.HTTPServer;
 
@@ -147,10 +143,54 @@ public class Worker {
 
                         final URL url = new URL(schedulerApiUrl + XWTools.IEXECETHCONFPATH);
 
-						String message = IOUtils.toString(url.openStream());
-						ObjectMapper mapper = new ObjectMapper();
-						CommonConfiguration commonConfiguration = mapper.readValue(message, CommonConfiguration.class);
-                        return commonConfiguration;
+                        String iexecHubAddr = null;
+                        String ethNodeAddr = null;
+                        String rlcAddr = null;
+                        String workerPoolAddr = null;
+                        String workerPoolName = null;
+
+                        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+
+                            logger.info("Retrieving blockchain config");
+                            String inputLine;
+                            while ((inputLine = in.readLine()) != null) {
+                                logger.info(inputLine);
+                                if (inputLine.indexOf(XWTools.IEXECHUBADDRTEXT) > 0) {
+                                    iexecHubAddr = inputLine.substring(inputLine.indexOf(XWTools.IEXECHUBADDRTEXT) + 1);
+                                }
+                                if (inputLine.indexOf(XWTools.IEXECRLCADDRTEXT) > 0) {
+                                    rlcAddr = inputLine.substring(inputLine.indexOf(XWTools.IEXECRLCADDRTEXT) + 1);
+                                }
+                                if (inputLine.indexOf(XWTools.IEXECWORKERPOOLADDRTEXT) > 0) {
+                                    workerPoolAddr = inputLine.substring(inputLine.indexOf(XWTools.IEXECWORKERPOOLADDRTEXT) + 1);
+                                }
+                                if (inputLine.indexOf(XWTools.IEXECWORKERPOOLNAMETEXT) > 0) {
+                                    workerPoolName = inputLine.substring(inputLine.indexOf(XWTools.IEXECWORKERPOOLNAMETEXT) + 1);
+                                }
+                                logger.debug("'" + inputLine + "'.indexOf(" + XWTools.ETHNODEADDRTEXT + ")" + " = "
+                                        + inputLine.indexOf(XWTools.ETHNODEADDRTEXT));
+                                if (inputLine.indexOf(XWTools.ETHNODEADDRTEXT) > 0) {
+                                    ethNodeAddr = inputLine.substring(inputLine.indexOf(XWTools.ETHNODEADDRTEXT) + 1);
+                                    logger.debug("ethNodeAddr = " + ethNodeAddr);
+                                }
+                            }
+                        }
+                        final CommonConfiguration conf = new CommonConfiguration();
+                        final WorkerPoolConfig workerPoolConf = new WorkerPoolConfig();
+                        workerPoolConf.setAddress(workerPoolAddr);
+                        workerPoolConf.setName(workerPoolName);
+
+                        final ContractConfig contractConf = new ContractConfig();
+                        contractConf.setIexecHubAddress(iexecHubAddr);
+                        contractConf.setRlcAddress(rlcAddr);
+
+                        final NodeConfig nodeConf = new NodeConfig();
+                        nodeConf.setClientAddress(ethNodeAddr);
+
+                        contractConf.setWorkerPoolConfig(workerPoolConf);
+                        conf.setContractConfig(contractConf);
+                        conf.setNodeConfig(nodeConf);
+                        return conf;
 
                     } catch (final Exception e) {
                         logger.exception("Can't get iExec config from " + schedulerApiUrl + XWTools.IEXECETHCONFPATH, e);

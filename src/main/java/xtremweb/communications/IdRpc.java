@@ -530,7 +530,7 @@ public enum IdRpc {
 
 		@Override
 		public String helpRestApi() {
-			return "/" + this.toString() + "?" + XWPostParams.XMLDESC + "=an xml description : sends an user group";
+			return "/" + this.toString() + "?" + XWPostParams.XMLDESC + "=an xml description : sends a user group";
 		}
 	},
 	/**
@@ -551,47 +551,6 @@ public enum IdRpc {
 		@Override
 		public String helpRestApi() {
 			return "/" + this.toString() + "/anUID : retrieves all user groups";
-		}
-	},
-	/**
-	 * This sends a market order
-	 */
-	SENDMARKETORDER {
-		@Override
-		public XMLRPCCommandSend newCommand(final URI uri, final UserInterface client, final Table obj)
-				throws IOException {
-			return newXMLRPCCommandSend(uri, client, obj);
-		}
-
-		@Override
-		public String helpClient() {
-			return this.toString()
-					+ " not available";
-		}
-
-		@Override
-		public String helpRestApi() {
-			return "/" + this.toString() + "?" + XWPostParams.XMLDESC + "=an xml description : sends a market order";
-		}
-	},
-	/**
-	 * This retrieves all market orders
-	 */
-	GETMARKETORDERS {
-		@Override
-		public XMLRPCCommandGetUserGroups newCommand(final URI uri, final UserInterface client, final Table obj)
-				throws IOException {
-			return new XMLRPCCommandGetUserGroups(uri, client);
-		}
-
-		@Override
-		public String helpClient() {
-			return this.toString() + " : retrieves all market order";
-		}
-
-		@Override
-		public String helpRestApi() {
-			return "/" + this.toString() + "/anUID : retrieves all market orders";
 		}
 	},
 	/**

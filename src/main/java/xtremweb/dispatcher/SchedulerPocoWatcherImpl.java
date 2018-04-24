@@ -1,7 +1,6 @@
 package xtremweb.dispatcher;
 
 import com.iexec.common.contracts.generated.WorkerPool;
-import com.iexec.common.contracts.generated.WorkOrder;
 import com.iexec.common.ethereum.IexecConfigurationService;
 import com.iexec.common.ethereum.Web3jService;
 import com.iexec.scheduler.actuator.ActuatorService;
